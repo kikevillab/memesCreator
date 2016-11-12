@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/top_text"
+        android:layout_margin="10dp"
+        android:ems="10"
+        android:id="@+id/topText" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/imageSelected"
+        android:layout_weight="0.70" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/bottomText"
+        android:layout_margin="10dp"
+        android:hint="@string/bottom_text" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectedFont"
+        android:hint="@string/font_family_text"
+        android:layout_weight="0.13" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:hint="@string/font_size_text"
+        android:id="@+id/selectedFontSize" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:text="Cancelar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancelButton"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Crear Meme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/createMemeButton"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="#FFF"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -98,9 +98,9 @@ public class MemesProvider  extends ContentProvider {
             }
         }else if(sUriMatcher.match(uri) == ID_URI_FONTS){
             rows = memesManager.getFontsAsCursor(projection, selection, selectionArgs, sortOrder);
+
             if(rows.getCount() == 0) {
                 Call<List<String>> call = memesApiService.getFonts();
-                //FontsCallback fontsCallback = new FontsCallback(getContext());
                 try {
                     Response<List<String>> response = call.execute();
                     if(response.isSuccessful()){

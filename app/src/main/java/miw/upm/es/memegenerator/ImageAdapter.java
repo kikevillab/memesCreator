@@ -1,20 +1,26 @@
 package miw.upm.es.memegenerator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import miw.upm.es.memegenerator.model.Image;
@@ -43,7 +49,7 @@ public class ImageAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, Cursor cursor) {
         // Find fields to populate in inflated template
         TextView tvImageName = (TextView) view.findViewById(R.id.imageName);
         ImageView ivImageSrc = (ImageView) view.findViewById(R.id.poster);
@@ -59,6 +65,23 @@ public class ImageAdapter extends CursorAdapter {
                     .load(imageSrc)
                     .into(ivImageSrc);
         }
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView tvImageName = (TextView) view.findViewById(R.id.imageName);
+                ImageView ivImageSrc = (ImageView) view.findViewById(R.id.poster);
+
+                Intent intent = new Intent(context, MemeCreatorActivity.class);
+                intent.putExtra("IMAGEN", tvImageName.getText().toString());
+                Bitmap bitmap = ((BitmapDrawable)ivImageSrc.getDrawable()).getBitmap();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 0, outputStream);
+                intent.putExtra("IMAGEN_URL", outputStream.toByteArray());
+                context.startActivity(intent);
+            }
+        });
+
     }
 
 

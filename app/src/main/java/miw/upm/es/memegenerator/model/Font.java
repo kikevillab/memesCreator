@@ -33,4 +33,12 @@ public class Font {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Font{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

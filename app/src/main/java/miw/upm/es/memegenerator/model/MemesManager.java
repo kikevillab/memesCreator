@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class MemesManager extends SQLiteOpenHelper{
 
     private final static String DATABASE_NAME = MemeTable.TABLE_NAME + ".db";
 
-    private final static int VERSION = 2;
+    private final static int VERSION = 5;
 
     public MemesManager(Context context){
         super(context, DATABASE_NAME, null, VERSION);
@@ -75,8 +76,7 @@ public class MemesManager extends SQLiteOpenHelper{
     public void addFont(Font font){
         ContentValues values = new ContentValues();
         values.put(FontTable.COL_NAME_FONT_NAME, font.getName());
-
-        font.setId(getWritableDatabase().insert(ImageTable.TABLE_NAME, null, values));
+        font.setId(getWritableDatabase().insert(FontTable.TABLE_NAME, null, values));
     }
 
     public boolean hasFont(Font font){
@@ -195,6 +195,6 @@ public class MemesManager extends SQLiteOpenHelper{
         if(sortOrder == null)
             sortOrder = FontTable.COL_NAME_ID + " ASC";
 
-        return getReadableDatabase().query(FontTable.TABLE_NAME,projection, selection, selectionArgs, null, null, sortOrder);
+        return getReadableDatabase().query(FontTable.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
     }
 }
