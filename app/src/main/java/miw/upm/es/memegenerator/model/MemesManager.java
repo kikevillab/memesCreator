@@ -27,7 +27,7 @@ public class MemesManager extends SQLiteOpenHelper{
 
     private final static String DATABASE_NAME = MemeTable.TABLE_NAME + ".db";
 
-    private final static int VERSION = 5;
+    private final static int VERSION = 1;
 
     public MemesManager(Context context){
         super(context, DATABASE_NAME, null, VERSION);
@@ -165,15 +165,13 @@ public class MemesManager extends SQLiteOpenHelper{
 
 
     private Bitmap getBitmapImage( byte[] imgByte) {
-        return null;
-        //return BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+        return BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
     }
 
     private byte[] getBitmapAsByteArray(Bitmap bitmap) {
-        return null;
-        /*ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 0, outputStream);
-        return outputStream.toByteArray();*/
+        return outputStream.toByteArray();
     }
 
 

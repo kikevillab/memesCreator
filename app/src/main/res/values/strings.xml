@@ -2,8 +2,8 @@
     <string name="app_name">Meme Generator</string>
     <string name="image_name">imageName</string>
     <string name="image_url">imageUrl</string>
-    <string name="top_text">Texto de arriba</string>
-    <string name="bottom_text">Texto de abajo</string>
+    <string name="top_text">Texto superior</string>
+    <string name="bottom_text">Texto inferior</string>
     <string name="font_size_text">Tamaño fuente</string>
     <string name="font_family_text">Seleccione una fuente</string>
 </resources>

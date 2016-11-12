@@ -16,6 +16,15 @@ public class Meme {
     private Bitmap image;
 
 
+    public Meme(String bottomText, String topText, String font, int fontSize, String baseImage, Bitmap image) {
+        this.bottomText = bottomText;
+        this.topText = topText;
+        this.font = font;
+        this.fontSize = fontSize;
+        this.baseImage = baseImage;
+        this.image = image;
+    }
+
     public Meme(long id, String bottomText, String topText, String font, int fontSize, String baseImage, Bitmap image) {
         this.id = id;
         this.bottomText = bottomText;

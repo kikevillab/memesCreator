@@ -2,22 +2,32 @@ package miw.upm.es.memegenerator;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+
 import miw.upm.es.memegenerator.model.FontContract;
 import miw.upm.es.memegenerator.model.ImageContract;
+import miw.upm.es.memegenerator.model.MemeContract;
 
 /**
  * Created by Enrique on 11/11/2016.
@@ -50,6 +60,36 @@ public class MemeCreatorActivity extends Activity implements
         fontAdapter = new SimpleCursorAdapter(this, R.layout.support_simple_spinner_dropdown_item, null, new String[] {FontContract.FontTable.COL_NAME_FONT_NAME}, new int[] {android.R.id.text1}, 0);
         fontAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fontSelector.setAdapter(fontAdapter);
+
+        Button createMemeButton = (Button) findViewById(R.id.createMemeButton);
+        createMemeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String topText = ((EditText) findViewById(R.id.topText)).getText().toString();
+                String bottomText = ((EditText) findViewById(R.id.bottomText)).getText().toString();
+                String fontSize = ((EditText) findViewById(R.id.selectedFontSize)).getText().toString();
+                Cursor fontFamilySelectedCursor = ((Cursor) ((Spinner) findViewById(R.id.selectedFont)).getSelectedItem());
+                String fontFamily = fontFamilySelectedCursor.getString(fontFamilySelectedCursor.getColumnIndexOrThrow(FontContract.FontTable.COL_NAME_FONT_NAME));
+                ContentValues values = new ContentValues();
+                values.put(MemeContract.MemeTable.COL_NAME_TOP_TEXT, topText);
+                values.put(MemeContract.MemeTable.COL_NAME_BOTTOM_TEXT, bottomText);
+                values.put(MemeContract.MemeTable.COL_NAME_FONT_SIZE, fontSize);
+                values.put(MemeContract.MemeTable.COL_NAME_FONT, fontFamily);
+                values.put(MemeContract.MemeTable.COL_NAME_MEME, image);
+
+                Toast.makeText(getApplicationContext(), fontFamily, Toast.LENGTH_SHORT);
+
+                Uri newMemeUri = getContentResolver().insert(MemesProvider.NEW_MEMES_URI, values);
+
+
+
+                Intent intent = new Intent(getApplicationContext(), MemeActivity.class);
+                intent.putExtra("MEME_URI", newMemeUri);
+                startActivity(intent);
+
+
+            }
+        });
 
     }
 

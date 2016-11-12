@@ -3,6 +3,7 @@ package miw.upm.es.memegenerator.network;
 import java.util.List;
 
 import miw.upm.es.memegenerator.model.Meme;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -19,7 +20,7 @@ public interface MemeGeneratorService {
     static final String ENDPOINT = "https://ronreiter-meme-generator.p.mashape.com/";
 
     @GET("/meme")
-    Call<Meme> generateMeme(@Query("bottom") String bottomText, @Query("font") String font, @Query("font_size") String fontSize, @Query("meme") String meme, @Query("top") String topText);
+    Call<ResponseBody> generateMeme(@Query("bottom") String bottomText, @Query("font") String font, @Query("font_size") String fontSize, @Query("meme") String meme, @Query("top") String topText);
 
     @GET("/images")
     Call<List<String>> getImages();

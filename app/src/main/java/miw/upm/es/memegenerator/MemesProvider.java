@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -22,6 +23,7 @@ import miw.upm.es.memegenerator.network.ImagesCallback;
 import miw.upm.es.memegenerator.network.MemeCallback;
 import miw.upm.es.memegenerator.network.MemeGeneratorFactory;
 import miw.upm.es.memegenerator.network.MemeGeneratorService;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -38,6 +40,7 @@ public class MemesProvider  extends ContentProvider {
     private static final String ENTITY = "meme";
 
     public static final Uri MEMES_URI = Uri.parse("content://" + AUTHORITY + "/" + ENTITY);
+    public static final Uri NEW_MEMES_URI = Uri.parse("content://" + AUTHORITY + "/" + ENTITY + "/new");
     public static final Uri IMAGES_URI = Uri.parse("content://" + AUTHORITY + "/" + ENTITY + "/images");
     public static final Uri FONTS_URI = Uri.parse("content://" + AUTHORITY + "/" + ENTITY + "/fonts");
 
@@ -75,6 +78,9 @@ public class MemesProvider  extends ContentProvider {
 
         if(sUriMatcher.match(uri) == ID_URI_MEMES) {
             rows = memesManager.getMemesAsCursor(projection, selection, selectionArgs, sortOrder);
+        }else if(sUriMatcher.match(uri) == ID_URI_NEW_MEMES) {
+            rows = memesManager.getMemesAsCursor(projection, selection, selectionArgs, sortOrder);
+            rows.moveToLast();
         }else if(sUriMatcher.match(uri) == ID_URI_IMAGES){
             rows = memesManager.getImagesAsCursor(projection, selection, selectionArgs, sortOrder);
 
@@ -143,11 +149,12 @@ public class MemesProvider  extends ContentProvider {
         if(sUriMatcher.match(uri) != ID_URI_NEW_MEMES)
             return null;
 
-        Call<Meme> call = memesApiService.generateMeme((String) contentValues.get(MemeContract.MemeTable.COL_NAME_BOTTOM_TEXT), (String) contentValues.get(MemeContract.MemeTable.COL_NAME_FONT), (String) contentValues.get(MemeContract.MemeTable.COL_NAME_FONT_SIZE), (String) contentValues.get(MemeContract.MemeTable.COL_NAME_MEME),(String)  contentValues.get(MemeContract.MemeTable.COL_NAME_TOP_TEXT));
-        MemeCallback memeCallback = new MemeCallback(getContext());
+        Call<ResponseBody> call = memesApiService.generateMeme((String) contentValues.get(MemeContract.MemeTable.COL_NAME_BOTTOM_TEXT), (String) contentValues.get(MemeContract.MemeTable.COL_NAME_FONT), (String) contentValues.get(MemeContract.MemeTable.COL_NAME_FONT_SIZE), (String) contentValues.get(MemeContract.MemeTable.COL_NAME_MEME),(String)  contentValues.get(MemeContract.MemeTable.COL_NAME_TOP_TEXT));
+        Meme meme = new Meme((String) contentValues.get(MemeContract.MemeTable.COL_NAME_BOTTOM_TEXT),(String)  contentValues.get(MemeContract.MemeTable.COL_NAME_TOP_TEXT) , (String) contentValues.get(MemeContract.MemeTable.COL_NAME_FONT), Integer.valueOf((String) contentValues.get(MemeContract.MemeTable.COL_NAME_FONT_SIZE)), (String) contentValues.get(MemeContract.MemeTable.COL_NAME_MEME), null);
+        MemeCallback memeCallback = new MemeCallback(getContext(), meme);
         call.enqueue(memeCallback);
 
-        return uri;
+        return NEW_MEMES_URI;
 
     }
 
@@ -160,4 +167,6 @@ public class MemesProvider  extends ContentProvider {
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
         return 0;
     }
+
+
 }
